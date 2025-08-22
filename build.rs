@@ -138,7 +138,7 @@ fn parse_version_cfgs_from_cargo_toml() -> Vec<VersionCfg> {
     //
     // This means that Cargo.toml may not be available in the current working dir. So we instead
     // search for it in the current directory or any child directory.
-    let cargo_toml = fs::read_to_string(find_cargo_toml()).expect("failed to read Cargo.toml 2");
+    let cargo_toml = fs::read_to_string(find_cargo_toml()).expect("failed to read Cargo.toml");
 
     // Expect a Cargo.toml with the following format:
     //
