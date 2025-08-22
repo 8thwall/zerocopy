@@ -118,10 +118,10 @@ struct VersionCfg {
 const ITER_FIRST_NEXT_EXPECT_MSG: &str = "unreachable: a string split cannot produce 0 items";
 
 fn find_cargo_toml() -> String {
-    for entry in WalkDir::new(".")
+    if let Some(entry) = WalkDir::new(".")
         .into_iter()
         .filter_map(Result::ok)
-        .filter(|e| e.file_name() == "Cargo.toml")
+        .filter(|e| e.file_name() == "Cargo.toml").next()
     {
         return entry.path().to_string_lossy().to_string();
     }
