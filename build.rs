@@ -120,8 +120,7 @@ const ITER_FIRST_NEXT_EXPECT_MSG: &str = "unreachable: a string split cannot pro
 fn find_cargo_toml() -> String {
     if let Some(entry) = WalkDir::new(".")
         .into_iter()
-        .filter_map(Result::ok)
-        .filter(|e| e.file_name() == "Cargo.toml").next()
+        .filter_map(Result::ok).find(|e| e.file_name() == "Cargo.toml")
     {
         return entry.path().to_string_lossy().to_string();
     }
