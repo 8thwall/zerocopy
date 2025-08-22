@@ -117,6 +117,9 @@ struct VersionCfg {
 
 const ITER_FIRST_NEXT_EXPECT_MSG: &str = "unreachable: a string split cannot produce 0 items";
 
+/// Look for Cargo.toml in the current directory or any child directory.
+///
+/// Returns the path to the file if found, otherwise panics.
 fn find_cargo_toml() -> String {
     if let Some(entry) = WalkDir::new(".")
         .into_iter()
