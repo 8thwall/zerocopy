@@ -129,11 +129,11 @@ fn find_cargo_toml() -> String {
 }
 
 fn parse_version_cfgs_from_cargo_toml() -> Vec<VersionCfg> {
-    // When building Tauri apps, we update `rules_rust()` to not change the working directory to the 
-    // Rust app root (i.e. Cargo.toml). Instead we execute from the the sandbox root. This is 
-    // important b/c many of our build tools (i.e. workspace-env) expect to be run from the sandbox 
-    // root.
-    // 
+    // NOTE(paris): When building Tauri apps, we update `rules_rust()` to not change the working 
+    // directory to the Rust app root (i.e. Cargo.toml). Instead we execute from the the sandbox 
+    // root. This is important b/c many of our build tools (i.e. workspace-env) expect to be run from 
+    // the sandbox root.
+    //
     // This means that Cargo.toml may not be available in the current working dir. So we instead
     // search for it in the current directory or any child directory.
     let cargo_toml = fs::read_to_string(find_cargo_toml()).expect("failed to read Cargo.toml 2");
