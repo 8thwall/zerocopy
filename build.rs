@@ -56,6 +56,7 @@
 )]
 
 use std::{env, fs, process::Command, str};
+use walkdir::WalkDir;
 
 fn main() {
     // Avoid unnecessary re-building.
@@ -116,8 +117,26 @@ struct VersionCfg {
 
 const ITER_FIRST_NEXT_EXPECT_MSG: &str = "unreachable: a string split cannot produce 0 items";
 
+fn find_cargo_toml() -> String {
+    for entry in WalkDir::new(".")
+        .into_iter()
+        .filter_map(Result::ok)
+        .filter(|e| e.file_name() == "Cargo.toml")
+    {
+        return entry.path().to_string_lossy().to_string();
+    }
+    panic!("Cargo.toml not found in current dir or children");
+}
+
 fn parse_version_cfgs_from_cargo_toml() -> Vec<VersionCfg> {
-    let cargo_toml = fs::read_to_string("Cargo.toml").expect("failed to read Cargo.toml");
+    // When building Tauri apps, we update `rules_rust()` to not change the working directory to the 
+    // Rust app root (i.e. Cargo.toml). Instead we execute from the the sandbox root. This is 
+    // important b/c many of our build tools (i.e. workspace-env) expect to be run from the sandbox 
+    // root.
+    // 
+    // This means that Cargo.toml may not be available in the current working dir. So we instead
+    // search for it in the current directory or any child directory.
+    let cargo_toml = fs::read_to_string(find_cargo_toml()).expect("failed to read Cargo.toml 2");
 
     // Expect a Cargo.toml with the following format:
     //
