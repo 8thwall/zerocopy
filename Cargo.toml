@@ -81,6 +81,9 @@ std = ["alloc"]
 # removed at any time.
 __internal_use_only_features_that_work_on_stable = ["alloc", "derive", "simd", "std"]
 
+[build-dependencies]
+walkdir = "2"
+
 [dependencies]
 zerocopy-derive = { version = "=0.8.26", path = "zerocopy-derive", optional = true }
 
